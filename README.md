@@ -5,6 +5,7 @@
 ### *Git for Your Data Pipelines*
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![PyPI version](https://img.shields.io/pypi/v/data-time-machine.svg)](https://pypi.org/project/data-time-machine/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -59,14 +60,24 @@ dtm log                     # View snapshot history
 - Python 3.10 or higher
 - pip package manager
 
+### Install from PyPI (Recommended)
+
+The easiest way to install Data Time Machine:
+
+```bash
+pip install data-time-machine
+```
+
 ### Install from Source
+
+For development or to get the latest changes:
 
 ```bash
 # Clone the repository
 git clone https://github.com/azmatsiddique/data-time-machine.git
 cd data-time-machine
 
-# Install dependencies
+# Install in editable mode
 pip install -e .
 ```
 
