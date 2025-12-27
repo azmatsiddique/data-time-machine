@@ -1,9 +1,10 @@
 [project]
 name = "data-time-machine"
-version = "0.1.0"
+version = "0.1.1"
 description = "A git-like state management system for data pipelines"
+readme = "README.md"
 authors = [
-    {name = "Azmat Siddique", email = "azmat@example.com"},
+    {name = "Azmat Siddique", email = "azmat.siddique.98@gmail.com"},
 ]
 dependencies = [
     "click>=8.1.7",
@@ -11,6 +12,11 @@ dependencies = [
     "pytest>=7.4.0",
 ]
 requires-python = ">=3.10"
+
+[project.urls]
+Homepage = "https://github.com/azmatsiddique/data-time-machine"
+Repository = "https://github.com/azmatsiddique/data-time-machine"
+Issues = "https://github.com/azmatsiddique/data-time-machine/issues"
 
 [project.scripts]
 dtm = "src.cli:main"
