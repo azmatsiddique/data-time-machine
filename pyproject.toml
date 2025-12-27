@@ -1,0 +1,20 @@
+[project]
+name = "data-time-machine"
+version = "0.1.0"
+description = "A git-like state management system for data pipelines"
+authors = [
+    {name = "Antigravity", email = "antigravity@google.com"},
+]
+dependencies = [
+    "click>=8.1.7",
+    "pydantic>=2.5.3",
+    "pytest>=7.4.0",
+]
+requires-python = ">=3.10"
+
+[project.scripts]
+dtm = "src.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

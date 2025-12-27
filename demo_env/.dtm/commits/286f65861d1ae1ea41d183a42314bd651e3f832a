@@ -1,0 +1,14 @@
+{
+  "id": "286f65861d1ae1ea41d183a42314bd651e3f832a",
+  "message": "Initial good state",
+  "timestamp": "2025-12-27T18:13:02.088789",
+  "parent_id": null,
+  "objects": {
+    "data.csv": {
+      "path": "data.csv",
+      "content_hash": "3dbebdf4639c00cdb0354cd9b692d3a6b4375393",
+      "size": 21,
+      "timestamp": "2025-12-27T18:13:02.088562"
+    }
+  }
+}
