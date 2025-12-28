@@ -164,6 +164,8 @@ DTM uses a three-tier architecture:
 ```
 
 ### Running the Demo
+ 
+[![asciicast](https://asciinema.org/a/Q0IGuHRKRAaB7k2MJliLRFPj2.svg)](https://asciinema.org/a/Q0IGuHRKRAaB7k2MJliLRFPj2)
 
 Experience DTM in action with the included demo script:
 
