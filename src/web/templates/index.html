@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Commit Timeline</h2>
+
+{% if error %}
+<div class="error">Error: {{ error }}</div>
+{% endif %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>Commit ID</th>
+            <th>Message</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for commit in commits %}
+        <tr>
+            <td>{{ commit.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td style="font-family: monospace;">{{ commit.id[:8] }}</td>
+            <td>{{ commit.message }}</td>
+            <td>
+                <a href="/commit/{{ commit.id }}" class="btn">View Files</a>
+                {% if commit.parent_id %}
+                <a href="/diff/{{ commit.parent_id }}/{{ commit.id }}" class="btn" style="background: #e67e22;">Diff
+                    (Parent)</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if not commits %}
+<p>No commits found. Run `dtm init` and `dtm snapshot` first.</p>
+{% endif %}
+{% endblock %}

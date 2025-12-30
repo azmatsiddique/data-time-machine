@@ -1,0 +1,11 @@
+{"version": 2, "width": 136, "height": 12, "timestamp": 1767107639, "env": {"SHELL": "/bin/zsh", "TERM": "xterm-256color"}}
+[0.130351, "o", "\r\n\u001b[1;32m=== DTM Integrations Demo ===\u001b[0m\r\n"]
+[0.131758, "o", "\r\n"]
+[1.131625, "o", "\u001b[1;36m>>> 1. Apache Airflow Integration\u001b[0m\r\nInitializing Airflow environment...\r\n"]
+[2.573229, "o", "Defining DAG task...\r\nTask created: <src.integrations.airflow.DTMSnapshotOperator object at 0x10518c710>\r\n"]
+[3.577918, "o", "\r\nExecuting Operator (Simulated DAG Run)...\r\n"]
+[3.59365, "o", "\u001b[1;32mSUCCESS: Airflow Task completed. Snapshot ID: a8b179f74b6b2bae2e31367fbdfb157ca8f05bd6\u001b[0m\r\n"]
+[5.594216, "o", "\r\n========================================\r\n\r\n\u001b[1;36m>>> 2. Prefect Integration\u001b[0m\r\nInitializing Prefect Flow...\r\n"]
+[6.595914, "o", "Running Flow 'Data Pipeline'...\r\n"]
+[7.59899, "o", "Executing Task 'create_dtm_snapshot'...\r\n"]
+[7.60845, "o", "\u001b[1;32mSUCCESS: Prefect Task completed. Snapshot ID: ae632ce787fb56b2f967faaf46b6412aa8abf3ea\u001b[0m\r\n\r\n\u001b[1;32m=== Demo Completed ===\u001b[0m\r\n"]

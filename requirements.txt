@@ -1,0 +1,20 @@
+# Core
+click>=8.1.7
+pydantic>=2.5.3
+
+# Testing
+pytest>=7.4.0
+
+# Web Dashboard
+fastapi>=0.100.0
+uvicorn>=0.23.0
+jinja2>=3.1.0
+
+# Cloud Backends
+boto3>=1.28.0               # AWS S3
+google-cloud-storage>=2.10.0 # GCS
+azure-storage-blob>=12.17.0  # Azure Blob
+
+# Integrations (Optional - kept commented to avoid heavy installs if not needed)
+# apache-airflow>=2.7.0
+# prefect>=2.13.0

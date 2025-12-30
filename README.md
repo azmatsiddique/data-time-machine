@@ -11,7 +11,7 @@
 
 **Never lose track of your data states again. Roll back, debug, and restore with confidence.**
 
-[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Contributing](#-contributing)
+[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Cloud & Remote](#-cloud--remote) • [Dashboard](#-web-dashboard) • [Integrations](#-integrations)
 
 </div>
 
@@ -24,10 +24,10 @@
 ### Why DTM?
 
 - 🔍 **Debug Complex Failures**: Capture exact data states before and after pipeline runs
-- ⏮️ **Instant Rollbacks**: Restore entire environments to previous snapshots in seconds
-- 📸 **Automatic Snapshots**: Configure automatic state capture at critical pipeline stages
-- 🎯 **Lightweight & Fast**: Content-addressable storage means duplicate data is stored only once
-- 🔗 **Git-Like Workflow**: Familiar commands (`init`, `snapshot`, `checkout`, `log`)
+- ☁️ **Cloud Native**: Push snapshots to S3, GCS, or Azure Blob Storage
+- � **Visual Insights**: Explore commit history and diffs via a built-in Web Dashboard
+- ⚡ **Optimized Storage**: Deduplication and gzip compression for handling large datasets efficienty
+- � **Pipeline Ready**: Native integrations for Apache Airflow and Prefect
 
 ---
 
@@ -35,20 +35,24 @@
 
 ### Core Capabilities
 
-- **🔐 Content-Addressable Storage**: Efficient deduplication using SHA-256 hashing
-- **📊 Metadata Tracking**: Complete audit trail of all data state changes
-- **🌳 Branch Support**: Manage multiple data environments simultaneously
-- **⚡ Fast Restoration**: Quickly restore files from any snapshot
-- **🎨 Clean CLI**: Intuitive command-line interface built with Click
-- **🧪 Fully Tested**: Comprehensive test suite with pytest
+- **🔐 Content-Addressable Storage**: Efficient deduplication and compression
+- **📊 Metadata & Diffs**: View unified diffs of data changes between snapshots
+- **⚡ Incremental Snapshots**: Only stores changed files automatically
+- **🌐 Remote Support**: Push/Pull to S3, Google Cloud Storage, and Azure Blob
+- **🎨 Web Dashboard**: Interactive browser-based visualization of your data history
 
 ### Command Set
 
 ```bash
-dtm init                    # Initialize a new DTM repository
-dtm snapshot -m "message"   # Snapshot current state
-dtm checkout <commit-id>    # Restore to a specific snapshot
-dtm log                     # View snapshot history
+dtm init                       # Initialize a new DTM repository
+dtm snapshot -m "message"      # Snapshot current state
+dtm checkout <commit-id>       # Restore to a specific snapshot
+dtm diff <commit_a> <commit_b> # Compare two snapshots
+dtm log                        # View snapshot history
+dtm web                        # Launch Visualization Dashboard
+dtm remote add origin s3://... # Add a remote storage backend
+dtm push origin                # Push snapshots to cloud
+dtm pull origin                # Pull snapshots from cloud
 ```
 
 ---
@@ -60,137 +64,92 @@ dtm log                     # View snapshot history
 - Python 3.10 or higher
 - pip package manager
 
-### Install from PyPI (Recommended)
-
-The easiest way to install Data Time Machine:
+### Install from PyPI
 
 ```bash
 pip install data-time-machine
 ```
 
-### Install from Source
+### Install with Cloud Support
 
-For development or to get the latest changes:
-
+To enable S3, GCS, or Azure support, install the necessary extras (conceptually):
 ```bash
-# Clone the repository
-git clone https://github.com/azmatsiddique/data-time-machine.git
-cd data-time-machine
-
-# Install in editable mode
-pip install -e .
+pip install boto3 google-cloud-storage azure-storage-blob
 ```
-
-### Verify Installation
-
-```bash
-dtm --help
-```
+*(Or install `fastapi uvicorn` for the dashboard)*
 
 ---
 
 ## 🏁 Quick Start
 
-### 1️⃣ Initialize Your Data Environment
-
+### 1️⃣ Initialize
 ```bash
-cd /path/to/your/data/project
+cd /path/to/data
 dtm init
 ```
 
-### 2️⃣ Create Your First Snapshot
-
+### 2️⃣ Snapshot
 ```bash
-# Make some changes to your data files
-echo "id,value" > data.csv
-echo "1,100" >> data.csv
-echo "2,200" >> data.csv
-
-# Snapshot the current state
-dtm snapshot -m "Initial clean dataset"
+echo "important data" > dataset.csv
+dtm snapshot -m "Initial baseline"
 ```
 
-### 3️⃣ Simulate a Data Corruption
-
+### 3️⃣ Visualize Changes
 ```bash
-# Oops! Pipeline bug corrupts your data
-echo "id,value" > data.csv
-echo "1,ERROR" >> data.csv
-echo "2,200" >> data.csv
+echo "bad data" >> dataset.csv
+cid=$(dtm snapshot -m "Corrupted run")
+dtm diff HEAD^ HEAD
 ```
 
-### 4️⃣ Roll Back to Safety
-
+### 4️⃣ Use the Dashboard
 ```bash
-# View your snapshot history
-dtm log
-
-# Restore to the last good state
-dtm checkout <commit-id>
-
-# Your data is back! ✨
-cat data.csv
+dtm web
+# Open http://localhost:8000 to browse history visually!
 ```
 
 ---
 
-## 📖 Documentation
+## ☁️ Cloud & Remote
 
-### How It Works
-
-DTM uses a three-tier architecture:
-
-1. **Storage Layer**: Content-addressable blob storage for deduplication
-2. **Metadata Layer**: Tracks commits, branches, and file relationships
-3. **Controller Layer**: Orchestrates snapshots, checkouts, and workspace management
-
-```
-┌─────────────────────────────────────────┐
-│           CLI Interface (Click)         │
-└─────────────────┬───────────────────────┘
-                  │
-┌─────────────────▼───────────────────────┐
-│       Controller (DTMController)        │
-│  • Snapshot creation & restoration      │
-│  • High-level workflow orchestration    │
-└─────┬────────────────────────┬──────────┘
-      │                        │
-┌─────▼──────────┐    ┌───────▼──────────┐
-│ MetadataManager│    │  StorageEngine   │
-│ • Commits      │    │  • Hashing       │
-│ • Branches     │    │  • Blobs         │
-│ • References   │    │  • Restoration   │
-└────────────────┘    └──────────────────┘
-```
-
-### Running the Demo
- 
-> [!TIP]
-> **Watch the Demo**: [Click here to watch the demo video](demo/demo.mov)
-
-Experience DTM in action with the included demo script:
+Push your data snapshots to the cloud for backup or sharing.
 
 ```bash
-python demo.py
+# S3
+dtm remote add s3-backup s3://my-bucket/dtm-repo
+dtm push s3-backup
+
+# Google Cloud Storage
+dtm remote add gcs-origin gs://my-data-lake/dtm
+dtm pull gcs-origin
 ```
 
-This demonstrates:
-- ✅ Repository initialization
-- ✅ Data state snapshotting
-- ✅ Simulated pipeline failure
-- ✅ Successful state restoration
+---
 
-### Running Tests
+## 🔌 Integrations
 
-```bash
-# Run all tests
-pytest
+### Apache Airflow
+Use `DTMSnapshotOperator` to automatically snapshot data in your DAGs.
 
-# Run with coverage
-pytest --cov=src tests/
+```python
+from src.integrations.airflow import DTMSnapshotOperator
 
-# Run specific test file
-pytest tests/test_controller.py -v
+snapshot_task = DTMSnapshotOperator(
+    task_id='snapshot_data',
+    message='Post-transformation snapshot',
+    repo_path='/data/project'
+)
+```
+
+### Prefect
+Use the `create_dtm_snapshot` task in your flows.
+
+```python
+from src.integrations.prefect import create_dtm_snapshot
+
+@flow
+def data_pipeline():
+    # ... processing ...
+    create_dtm_snapshot(message="Pipeline Success", repo_path=".")
 ```
 
 ---
@@ -200,79 +159,29 @@ pytest tests/test_controller.py -v
 ```
 data-time-machine/
 ├── src/
-│   ├── cli.py              # Command-line interface
+│   ├── cli.py              # CLI Entry point
 │   ├── core/
-│   │   ├── controller.py   # Main orchestration logic
-│   │   ├── metadata.py     # Metadata management
-│   │   └── storage.py      # Storage engine
-│   └── models/
-│       └── schema.py       # Pydantic data models
-├── tests/
-│   ├── test_controller.py
-│   ├── test_metadata.py
-│   ├── test_storage.py
-│   └── conftest.py
-├── demo.py                 # Interactive demonstration
-├── pyproject.toml          # Project configuration
+│   │   ├── backends.py     # Storage Backends (Local, S3, GCS, Azure)
+│   │   ├── remote.py       # Remote Manager (Push/Pull)
+│   │   ├── storage.py      # Storage Engine & Compression
+│   │   └── controller.py   # Business Logic
+│   ├── web/                # FastAPI Web Dashboard
+│   └── integrations/       # Airflow & Prefect modules
+├── scripts/                # Utility scripts
 └── README.md
 ```
 
 ---
 
-## 🛠️ Technology Stack
+## 📋 Roadmap (Completed)
 
-- **Language**: Python 3.10+
-- **CLI Framework**: Click 8.1+
-- **Data Validation**: Pydantic 2.5+
-- **Testing**: pytest 7.4+
-- **Hashing**: SHA-256 (hashlib)
-- **Build System**: Hatchling
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Here's how you can help:
-
-1. 🍴 Fork the repository
-2. 🌿 Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. ✅ Make your changes and add tests
-4. ✔️ Ensure all tests pass (`pytest`)
-5. 💬 Commit your changes (`git commit -m 'Add amazing feature'`)
-6. 📤 Push to your branch (`git push origin feature/amazing-feature`)
-7. 🎉 Open a Pull Request
-
-### Development Setup
-
-```bash
-# Clone your fork
-git clone https://github.com/azmatsiddique/data-time-machine.git
-cd data-time-machine
-
-# Install in development mode with test dependencies
-pip install -e ".[dev]"
-
-# Run tests to verify setup
-pytest
-```
-
----
-
-## 📋 Roadmap
-
-- [ ] Add diff visualization between snapshots
-- [ ] Implement remote repository support
-- [ ] Add compression for large file storage
-- [ ] Create web-based visualization dashboard
-- [ ] Support for incremental snapshots
-- [ ] Integration with popular data pipeline frameworks (Airflow, Prefect)
-- [ ] Cloud storage backends (S3, GCS, Azure Blob)
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- [x] Add diff visualization between snapshots
+- [x] Implement remote repository support
+- [x] Add compression for large file storage
+- [x] Create web-based visualization dashboard
+- [x] Support for incremental snapshots
+- [x] Integration with popular data pipeline frameworks (Airflow, Prefect)
+- [x] Cloud storage backends (S3, GCS, Azure Blob)
 
 ---
 
@@ -282,14 +191,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - GitHub: [@azmatsiddique](https://github.com/azmatsiddique)
 - Project Link: [github.com/azmatsiddique/data-time-machine](https://github.com/azmatsiddique/data-time-machine)
-
----
-
-## 🙏 Acknowledgments
-
-- Inspired by Git's elegant version control design
-- Built with modern Python best practices
-- Thanks to the open-source community for amazing tools
 
 ---
 

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Commit Details</h2>
+<div class="meta">
+    <strong>ID:</strong> {{ commit.id }}<br>
+    <strong>Display ID:</strong> {{ commit.id[:8] }}<br>
+    <strong>Parent:</strong> {{ commit.parent_id or "None" }}<br>
+    <strong>Date:</strong> {{ commit.timestamp }}<br>
+    <strong>Message:</strong> {{ commit.message }}
+</div>
+
+<h3>Files</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Path</th>
+            <th>Hash</th>
+            <th>Size (Bytes)</th>
+            <th>Last Modified</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for path, obj in commit.objects.items() %}
+        <tr>
+            <td>{{ path }}</td>
+            <td style="font-family: monospace;">{{ obj.content_hash[:8] }}</td>
+            <td>{{ obj.size }}</td>
+            <td>{{ obj.last_modified }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div style="margin-top: 2rem;">
+    <a href="/" class="btn">Back to Timeline</a>
+</div>
+{% endblock %}

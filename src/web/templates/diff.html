@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Diff View</h2>
+<div class="meta">
+    <strong>Comparing:</strong> <span style="font-family: monospace;">{{ commit_a[:8] }}</span> (Old)
+    Is Parent of
+    <span style="font-family: monospace;">{{ commit_b[:8] }}</span> (New)
+</div>
+
+<pre>{{ diff }}</pre>
+
+<div style="margin-top: 2rem;">
+    <a href="/" class="btn">Back to Timeline</a>
+</div>
+{% endblock %}

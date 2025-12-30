@@ -10,6 +10,7 @@ class FileObject(BaseModel):
     path: str
     content_hash: str
     size: int
+    last_modified: float = 0.0
     timestamp: datetime = Field(default_factory=datetime.now)
 
 class Commit(BaseModel):
