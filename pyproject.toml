@@ -1,6 +1,6 @@
 [project]
 name = "data-time-machine"
-version = "0.1.1"
+version = "0.2.0"
 description = "A git-like state management system for data pipelines"
 readme = "README.md"
 authors = [
@@ -10,6 +10,7 @@ dependencies = [
     "click>=8.1.7",
     "pydantic>=2.5.3",
 ]
+requires-python = ">=3.10"
 
 [project.optional-dependencies]
 test = ["pytest>=7.4.0"]
@@ -27,7 +28,7 @@ all = [
     "data-time-machine[web,cloud]",
 ]
 
-requires-python = ">=3.10"
+
 
 [project.urls]
 Homepage = "https://github.com/azmatsiddique/data-time-machine"
