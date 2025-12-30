@@ -46,3 +46,5 @@ manual_demo/
 # OS
 .DS_Store
 Thumbs.db
+.dtm/
+test_repo_*/
