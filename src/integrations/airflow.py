@@ -1,16 +1,17 @@
 from typing import Optional
+import logging
+
 try:
     from airflow.models import BaseOperator
-    from airflow.utils.decorators import apply_defaults
 except ImportError:
-    # improvements: log warning or create dummy base
-    class BaseOperator:
-        def __init__(self, *args, **kwargs):
-            import logging
-            self.log = logging.getLogger("airflow.task")
-            
-    def apply_defaults(func):
-        return func
+    # If Airflow is not installed, we can define a dummy for local code verification,
+    # but at runtime in Airflow it MUST succeed.
+    # We'll allow failure if not importing for type checking.
+    BaseOperator = object
+
+# apply_defaults is deprecated/removed in recent Airflow. 
+# We define a dummy to be safe if older code patterns copied it, 
+# or just remove it. We'll remove it.
 
 from src.core.controller import DTMController
 
@@ -22,7 +23,7 @@ class DTMSnapshotOperator(BaseOperator):
     :param repo_path: Path to the DTM repository (default: current working dir).
     """
     
-    @apply_defaults
+    # In Airflow 2.0+, @apply_defaults is not needed if we call super().__init__
     def __init__(self, message: str, repo_path: str = ".", *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.message = message
@@ -30,12 +31,8 @@ class DTMSnapshotOperator(BaseOperator):
 
     def execute(self, context):
         self.log.info(f"Creating DTM snapshot for repo at {self.repo_path}")
-        controller = DTMController(self.repo_path)
-        
-        # Verify it's initialized
-        # (Controller methods usually don't verify init explicitly except by failing, 
-        # but we can try/catch)
         try:
+            controller = DTMController(self.repo_path)
             commit_id = controller.snapshot(self.message)
             self.log.info(f"Snapshot created successfully: {commit_id}")
             return commit_id

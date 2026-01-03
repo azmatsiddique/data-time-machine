@@ -49,3 +49,5 @@ Thumbs.db
 .dtm/
 test_repo_*/
 web.log
+airflow_home/
+airflow_data.txt
