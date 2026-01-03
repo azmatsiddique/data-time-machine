@@ -6,7 +6,7 @@ from src.core.remote import RemoteManager
 
 @click.group()
 @click.version_option(
-    version="0.2.1", # Fallback or hardcoded since we are controlling source
+    version="0.2.2", # Fallback or hardcoded since we are controlling source
     prog_name="dtm"
 )
 def main():
