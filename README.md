@@ -8,6 +8,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/data-time-machine.svg)](https://pypi.org/project/data-time-machine/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy_Me_a_Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/azmatsiddiz)
 
 **Never lose track of your data states again. Roll back, debug, and restore with confidence.**
 
