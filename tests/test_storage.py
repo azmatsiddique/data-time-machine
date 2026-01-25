@@ -46,4 +46,4 @@ def test_scan_workspace(temp_workspace):
     with open(".dtm/config", "w") as f: f.write("conf")
     
     files = storage.scan_workspace()
-    assert set(files) == {"f1.txt", "sub/f2.txt"}
+    assert {f["path"] for f in files} == {"f1.txt", "sub/f2.txt"}
